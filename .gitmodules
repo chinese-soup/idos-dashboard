@@ -1,0 +1,3 @@
+[submodule "idospy"]
+	path = idospy
+	url = git@github.com:chinese-soup/idospy.git

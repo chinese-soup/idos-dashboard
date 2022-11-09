@@ -1,0 +1,155 @@
+    *
+    {
+        font-family: Helvetica, sans-serif, "DejaVu Sans";
+    }
+    body
+    {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        margin-top: 4px !important;
+        background: white;
+    }
+    body
+    {
+        margin: auto;
+    }
+    .container
+    {
+        clear: both;
+        height: 100%;
+        margin-top: 4px;
+        display: flex;
+        flex-direction: row;
+        flex-flow: row wrap;
+    }
+    .block > .header
+    {
+        padding: 2px;
+        margin: 0;
+        font-size: 105%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        background-color: rgb(20,20,20);
+        color: rgb(255,255,255);
+        min-height: 18px;
+        text-align: center;
+    }
+    .block
+    {
+        width: 33%;
+        overflow: hidden;
+        height: 400px;
+        flex-grow: 2;
+            /*border-radius: 10px;*/
+
+    }
+    .time
+    {
+        font-size: 125%;
+        margin: 0;
+        padding: 0;
+        padding-top: 2px !important;
+        padding-left: 5px;
+        width: 48%;
+        min-height: 50px;
+        text-align: center;
+        background-color: rgb(30,30,30);
+
+    }
+    .weather
+    {
+        font-size: 115%;
+        margin: 0;
+        padding: 0;
+        padding-top: 2px !important;
+        padding-left: 5px;
+        width: 48%;
+        background-color: rgb(30,30,30);
+        min-height: 50px;
+
+    }
+    .list
+    {
+        margin: 0;
+        padding: 0px;
+        list-style: none;
+        font-size: 12px;
+    }/*
+    .odjezd_size_1
+    {
+        {% if not search %}font-size: 12px;{% endif %}
+    }
+    .odjezd_size_2
+    {
+        {% if not search %}font-size: 12px;{% endif %}
+    }
+    .odjezd_size_3
+    {
+        {% if not search %}font-size: 12px;{% endif %}
+    }
+    .odjezd_size_4
+    {
+        {% if not search %}font-size: 12px;{% endif %}
+    }*/
+    .odd
+    {
+        background-color: rgb(220,220, 220);
+    }
+    .even
+    {
+        background-color: rgb(254,254,254);
+    }
+    table
+    {
+        width: 100%;
+        /*border: 1px solid black;*/
+        border-left: 1px solid black;
+     }
+    .odsazeni_1
+    {
+
+    }
+    .odsazeni_2
+    {
+        margin: 0px;
+    }
+    .odsazeni_2:before
+    {
+        content:"└─";
+    }
+    .odsazeni_3
+    {
+        margin: 30px;
+    }
+    .odsazeni_3:before
+    {
+        content:"└─";
+    }
+    .prestup
+    {
+        font-size: 80%;
+    }
+    .zastavka
+    {
+        font-size: 80%;
+    }
+    td
+    {
+        margin: 0px;
+        padding: 0px;
+        font-size: 100%;
+    }
+    tr
+    {
+        /*border-left: 1px solid black;
+        border-right: 1px solid black;*/
+    }
+    td.cas
+    {
+        min-width: 40px;
+	    font-size: 80%;
+    }
