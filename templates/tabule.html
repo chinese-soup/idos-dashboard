@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IDOS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tabule.css') }}">
+{% if not search %}
+    <meta http-equiv="refresh" content="3000">
+{% endif %}
+<script>
+        function time()
+        {
+            var a = document.getElementById("time");
+            a.style.backgroundColor = "rgb(230, 230, 230)";
+
+            var b = document.getElementById("weather");
+            b.style.backgroundColor = "rgb(230, 230, 230)";
+
+            //var a = document.getElementById("time");
+            //a.innerHTML = new Date().toLocaleString();
+            //setTimeout(time, 1000);
+        }
+    </script>
+</head>
+    <body onload="time();">
+    <!--<div class="block">-->
+    <table style="width: 100% !important;">
+        <tr>
+        <td class="time" id="time">{{ time.strftime("%a %d.%m.%Y - %H:%M:%S") }}</td>
+        <!--</div>-->
+        <td class="weather" id="weather"> {% if pocasi and pocasi.success %}
+            <small>Počasí: <img src="static/{{ pocasi.icon }}.png" style="float: left" height="24px">
+		<strong>{{ pocasi.popis }}</strong>, {{ pocasi.teplota }} °C |
+            <strong>Vlhkost:</strong> {{ pocasi.vlhkost }}% | <strong>Vítr:</strong> {{ pocasi.vitr_rychlost }} km/h ({{ pocasi.vitr_uhel }}°)<br>
+            {% else %}
+            Weather data not available.
+        {% endif %}</small></td>
+        </tr>
+    </table>
+    {% if search %}
+        <a href="/s">&lt; Zpět</a>
+        <br>
+    {% endif %}
+    <div class="container" >
+        <br>
+        {% for trasa in trasy %}
+            <div class="block">
+                <p class="header">
+                    <span style="text-overflow: ellipsis;">{{ trasa[0].trains[0].trainData.route[0].station.name }}</span>
+                    »
+                    <span style="text-overflow: ellipsis;">{{ trasa[0].trains[-1].trainData.route[-1].station.name }}</span></p>
+                <!--<ul class="list">-->
+                <table class="tabulka">
+                {% for spoj in trasa %}
+                    {% if spoj.trains|length == 1 %} {# Pokud jedeme bez prestupu #}
+
+                        <tr class="{% if loop.index < 5 %}odjezd_size_{{ loop.index }}{% endif %} {% if (loop.index % 2) == 0 %}odd{% else %}even{% endif %}">
+                            <td class="cas">
+                                <i style="{% if loop.index < 4 %} font-weight: bold; {% endif %}; color:  {% if spoj.trains[0].delay > 0 %}red{% endif %};">
+                                    {# When does the train leave? #}
+
+                                    {% set delta = spoj.trains[0].dateTime_start - time %}
+                                    {% set delta_min = (delta.seconds // 60) + 1 %}
+
+                                    {% if delta_min <= 0 %}
+                                        nyní
+                                    {% elif delta.days >= 0 and delta_min < 60 %}  {# Relative time #}
+                                        za {{ delta_min }} min
+                                    {% elif delta.days >= 0 and delta_min > 60 %}  {# Relative time #}
+                                        za {{ delta_min // 60 }}h {{ delta_min%60 }}m
+                                    {% else %} {# Absolute time #}
+                                        {{ spoj.trains[0].dateTime_start.strftime("%H:%M") }}
+                                    {% endif %}
+
+                                     {# If the train is delayed, show it #}
+                                    {% if spoj.trains[0].delay > 0 %}
+                                        (+{{ spoj.trains[0].delay }})
+                                    {% endif %}
+                                </i>
+                            </td>
+                            <td>
+
+                                <img height="16px" src="static/{{ spoj.trains[0].trainData.info.type }}.gif" alt="{{ spoj.trains[0].trainData.info.type }}">
+                                <strong>{{ spoj.trains[0].trainData.info.num1 }}</strong>
+                                {{ spoj.trains[0].dateTime_start.strftime('%H:%M') }} » {{ spoj.trains[0].dateTime_end.strftime('%H:%M') }}
+                            </td>
+                        </tr>
+
+                    {% else %} {# Nebo kdyz jedeme s prestupem #}
+                        <tr class="{% if loop.index < 4 %}odjezd_size_{{ loop.index }}{% endif %} {% if (loop.index % 2) == 0 %}odd{% else %}even{% endif %}">
+                            <td class="cas">
+                                 <i style="{% if loop.index < 4 %} font-weight: bold; {% endif %}; color: {% if spoj.trains[0].delay > 0 %}red{% endif %};">
+                                    {# When does the train leave? #}
+
+                                    {% set delta = spoj.trains[0].dateTime_start - time %}
+                                    {% set delta_min = (delta.seconds // 60) + 1 %}
+
+                                    {% if delta_min <= 0 %}
+                                        nyní
+                                    {% elif delta.days >= 0 and delta_min < 60 %}  {# Relative time #}
+                                        za {{ delta_min }} min
+                                    {% elif delta.days >= 0 and delta_min > 60 %}  {# Relative time #}
+                                        za {{ delta_min // 60 }}h {{ delta_min%60 }}m
+                                    {% else %} {# Absolute time #}
+                                        {{ spoj.trains[0].dateTime_start.strftime("%H:%M") }}
+                                    {% endif %}
+
+                                     {# If the train is delayed, show it #}
+                                    {% if spoj.trains[0].delay > 0 %}
+                                        (+{{ spoj.trains[0].delay }})
+                                    {% endif %}
+                                </i>
+                            </td>
+                                <td >
+                                {% for train in spoj.trains %}
+                                    <span class="odsazeni_{{ loop.index }}">
+                                        {# Ikonka naseho vozu #}
+                                        <img height="16px" src="static/{{ train.trainData.info.type }}.gif" alt="{{ train.trainData.info.type }}">
+
+                                        {# Cislo naseho vozu #}
+                                        <strong>{{ train.trainData.info.num1 }}</strong>
+                                        {% if predchozi != train.trainData.route[0].station.name and loop.index != 1 %}
+                                            <span class="zastavka">({{ train.trainData.route[0].station.name }})</span>
+                                        {% else %}
+                                        {% endif %}
+
+                                        {{ train.dateTime_start.strftime('%H:%M')  }} » {{ train.dateTime_end.strftime('%H:%M')  }}
+
+                                        <span class="zastavka">
+                                            {% if loop.index != spoj.trains|length %}
+                                                ({{ train.trainData.route[-1].station.name }})
+                                            {% endif %}
+                                        </span>
+
+                                    </span>
+                                    {% if spoj.train|length != loop.index %}
+
+                                    <div class="prestup"></div>
+
+                                    {% endif %}
+
+                                    {% set predchozi = train.trainData.route[-1].station.name %}
+                                {% endfor %}
+                                </td>
+                        </tr>
+
+                    {% endif %}
+
+                {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
