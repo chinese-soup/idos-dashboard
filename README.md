@@ -16,7 +16,7 @@ so you will need a valid `userID` from the API's owners to use this.
 
 This app uses my [idospy](https://github.com/chinese-soup/idospy) WIP wrapper as a submodule. 
 
-The backend uses `Flask` and simple HTML template with `jinja2` tepmlating.
+The backend uses `Flask` and simple HTML template with `jinja2` as the templating system.
 
 For the current weather, it uses the [OpenWeatherMap API](https://openweathermap.org/api).
 
