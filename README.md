@@ -21,8 +21,10 @@ The backend uses `Flask` and simple HTML template with `jinja2` as the templatin
 For the current weather, it uses the [OpenWeatherMap API](https://openweathermap.org/api).
 
 ## Requirements
-* Flask, jinja2
+* Flask, jinja2 (and their respective requirements)
+* requests
 * [idospy](https://github.com/chinese-soup/idospy)
+   * the `idospy` submodule additionally requires `dataclass-wizard`
 
 ## Usage
 1. Start from the example configuration file:
