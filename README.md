@@ -1,6 +1,6 @@
 # idos-dashboard
 ## What
-Simple web app showing your favourite public transport departures.
+Simple web app showing depeartures for your favourite public transport routes.
 
 I've made this specifically to have departures on a Kindle e-ink display, hence the black and white scheme of it, 
 as visible on this screenshot:
